@@ -5,4 +5,4 @@ server-side source:
 test :
 
 
-![Image description](img/img/XorEncryptionWebCam.png)
+![Image description]( img/XorEncryptionWebCam.png )
