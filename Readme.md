@@ -43,4 +43,4 @@ tcp6       0      0 127.0.0.1:48886         127.0.0.1:8989          ESTABLECIDO 
  
  Server-side Image of webcam after decryption:
  
- 
+ ![Image description]( img/AES_webcam.png )
