@@ -4,21 +4,21 @@ import java.io.Serializable;
 
 public class Frame implements Serializable{
 
-	private byte[] bytes;
+	private String bytes;
 	
-	public Frame(byte[] bytes) {
+	public Frame(String bytes) {
 		this.bytes = bytes;
 	}
 
 	public int size() {
-		return bytes.length;
+		return bytes.length();
 	}
 	
-	public byte[] getBytes() {
+	public String getBytes() {
 		return bytes;
 	}
 
-	public void setBytes(byte[] bytes) {
+	public void setBytes(String bytes) {
 		this.bytes = bytes;
 	}
 
