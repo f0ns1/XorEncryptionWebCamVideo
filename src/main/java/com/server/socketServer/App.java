@@ -26,7 +26,6 @@ public class App
         int videoServerPort=8989;
         JPanel panel = new JPanel();
         VideoServerThread video = new VideoServerThread(serverSocket, videoServerPort, panel, true);
-        video.run();
-    
+        video.start(); 
     }
 }

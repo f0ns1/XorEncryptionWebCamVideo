@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Window;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -16,11 +17,16 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.socket.frame.Frame;
+
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
 
 public class VideoServerThread extends Thread {
 	private ServerSocket serverSocket;
@@ -58,23 +64,22 @@ public class VideoServerThread extends Thread {
 			BufferedImage bufferedImage;
 			InputStream inputImage;
 			Frame f;
+			InputStream audio ;
+			AudioStream as ;
 			while (calling) {
 				try {
 					Object obj = ois.readObject();
 					f = (Frame) obj;
-					inputImage = new ByteArrayInputStream(decrypt(f.getBytes()));
-					bufferedImage = ImageIO.read(inputImage);
-					System.out.println("read image ..... " + bufferedImage);
-					System.out.println(contentPanel.getWidth());
-					System.out.println(contentPanel.getHeight());
-					System.out.println(window);
-					System.out.println(contentPanel.getGraphics());
-					//contentPanel.getGraphics().drawImage(bufferedImage, 0, 0, contentPanel.getWidth(), contentPanel.getHeight(), window);
+					inputImage = new ByteArrayInputStream(decrypt(f.getImg()));
+					bufferedImage = ImageIO.read(inputImage);	
 					contentPanel.getGraphics().drawImage(bufferedImage, 0, 0, window);
-
+					byte[] var =decrypt(f.getAudio());
+					audio=new ByteArrayInputStream(var);
+					AudioInputStream test = new AudioInputStream(audio, getAudioFormat(), var.length);
 					bufferedImage.flush();
 					inputImage.close();
-					f = null;
+					AudioPlayer.player.start(test);
+					f=null;
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.out.println(e.getMessage());
@@ -88,6 +93,16 @@ public class VideoServerThread extends Thread {
 		}
 	}
 
+	public static AudioFormat getAudioFormat() {
+        float sampleRate = 16000;
+        int sampleSizeInBits = 8;
+        int channels = 2;
+        boolean signed = true;
+        boolean bigEndian = true;
+        AudioFormat format = new AudioFormat(sampleRate, sampleSizeInBits,
+                                             channels, signed, bigEndian);
+        return format;
+    }
 	private byte[] decrypt(String bytes) {
 		byte[] out = null;
 		try {

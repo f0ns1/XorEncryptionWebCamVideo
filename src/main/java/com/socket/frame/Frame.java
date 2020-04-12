@@ -4,23 +4,35 @@ import java.io.Serializable;
 
 public class Frame implements Serializable{
 
-	private String bytes;
+	private String img;
+	private String audio;
 	
-	public Frame(String bytes) {
-		this.bytes = bytes;
+	public Frame(String img, String audio) {
+		this.img = img;
+		this.audio= audio;
 	}
 
-	public int size() {
-		return bytes.length();
+	public int sizeImg() {
+		return img.length();
 	}
-	
-	public String getBytes() {
-		return bytes;
-	}
-
-	public void setBytes(String bytes) {
-		this.bytes = bytes;
+	public int sizeAudio() {
+		return audio.length();
 	}
 
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
+
+	public String getAudio() {
+		return audio;
+	}
+
+	public void setAudio(String audio) {
+		this.audio = audio;
+	}	
 	
 }
